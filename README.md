@@ -60,6 +60,8 @@ Six seeds, paired, measured against the protein ground truth on the same 5,422 c
 
 ### Phase recovery against published methods
 
+![Phase recovery compared against published methods](figures/phase_method_comparison.png)
+
 | | method | Spearman vs ground truth | median angular error |
 |---|---|---|---|
 | *oracle* | scVI latent + ridge probe **fitted to the labels** | *+0.669* | *15°* |
@@ -160,7 +162,8 @@ prepare_battich.py           dataset preparation and the four measurement layers
 gene_selection.py            model-independent gene selection
 baselines/scvi_baseline.py   the supervised-probe ceiling
 baselines/run_cyclevi.py     published comparator, re-run locally under matched conditions
-figures/                     benchmark results
+figures/                     benchmark results, and the script that builds the
+                             comparison figure
 ```
 
 `circular.py` is the piece most likely to be useful on its own: the alignment and scoring routines
