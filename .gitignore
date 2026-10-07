@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Environments
+.venv/
+
+# Data (not vendored — see prepare_battich.py)
+data/**/*.h5ad
+data/**/*.loom
+*.h5ad
+
+# OS / editor
+.DS_Store
+.ipynb_checkpoints/
+
+# Local AI tooling config
+CLAUDE.md
