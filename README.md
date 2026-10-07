@@ -12,16 +12,16 @@ cell-cycle genes, then a least-squares cosine fit per gene.
 
 ![GyreVI's learned estimates against simple estimators](figures/simple_vs_model.png)
 
-| correlation with ground truth | GyreVI, learned | least squares at GyreVI's phase | Seurat phase + least squares | PCA phase + least squares |
-|---|---|---|---|---|
-| cell phase θ | +0.473 ± 0.009 | — | +0.463 | **+0.579** |
-| gene peak phase φ | +0.706 ± 0.044 | +0.771 ± 0.012 | +0.767 | **+0.823** |
-| unspliced lead δ | +0.598 ± 0.029 | +0.819 ± 0.024 | +0.932 | **+0.950** |
-| gene amplitude R | +0.912 ± 0.009 | +0.970 ± 0.003 | +0.963 | **+0.981** |
+| correlation with ground truth | GyreVI, learned | least squares at GyreVI's phase | CycleVI phase + least squares | Seurat phase + least squares | PCA phase + least squares |
+|---|---|---|---|---|---|
+| cell phase θ | +0.473 ± 0.009 | — | +0.438 | +0.463 | **+0.579** |
+| gene peak phase φ | +0.706 ± 0.044 | +0.771 ± 0.012 | +0.770 | +0.767 | **+0.823** |
+| unspliced lead δ | +0.598 ± 0.029 | +0.819 ± 0.024 | +0.929 | +0.932 | **+0.950** |
+| gene amplitude R | +0.912 ± 0.009 | +0.970 ± 0.003 | +0.966 | +0.963 | **+0.981** |
 
 Spearman correlation after circular alignment, except φ (circular correlation). GyreVI: mean ± sd over 6
-paired seeds. The simple
-estimators reproduce with `python baselines/two_step.py`.
+paired seeds. The last three columns reproduce with `python baselines/two_step.py`; the CycleVI column
+needs CycleVI's output from `baselines/run_cyclevi.py` first.
 
 The model loses twice:
 
@@ -29,6 +29,11 @@ The model loses twice:
   than that reference (+0.473 vs +0.579).
 - **Gene parameters.** Even at the model's own phase, least squares beats its learned parameters
   (δ: +0.82 vs +0.60).
+
+**Why this is useful.** The PCA result shows the data hold more phase information than the model extracts
+(+0.58; a supervised probe reaches +0.68), so the gap is in the model, not the data. The two losses above
+say where to look. A natural next step is to anchor the model at the PCA solution and learn only
+corrections.
 
 *Caveat:* the per-gene targets are themselves cosine fits at the protein phase, on the same counts, which
 favours estimators of that form. Kinetics measured independently by metabolic labelling, which this

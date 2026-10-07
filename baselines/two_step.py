@@ -11,6 +11,7 @@ from pathlib import Path
 
 import anndata as ad
 import numpy as np
+import pandas as pd
 import scipy.sparse as sp
 from scipy.stats import spearmanr
 from sklearn.decomposition import PCA
@@ -55,7 +56,12 @@ lead = wrap_pi(T["peak_s"] - T["peak_u"])
 print(f"{a.n_obs} cells | {cc.sum()} curated cell-cycle genes | "
       f"{osc.sum()} oscillating / {strong.sum()} strong / {fair.sum()} unspliced-informative genes\n")
 print(f"{'phase from':12s} {'cell phase':>11s} {'peak phase':>11s} {'lead':>8s} {'amplitude':>10s}")
-for name, phase in [("Seurat", seurat), ("PCA", pca)]:
+phases = [("Seurat", seurat), ("PCA", pca)]
+cyclevi_csv = Path(path).parent / "cyclevi_theta.csv"        # written by baselines/run_cyclevi.py
+if cyclevi_csv.exists():
+    cyc = pd.read_csv(cyclevi_csv, index_col=0).reindex(a.obs.index).iloc[:, 0].values
+    phases.insert(0, ("CycleVI", wrap_2pi(cyc)))
+for name, phase in phases:
     theta = compare_phases(protein, phase)["spearman"]
     f = cosine_fit(align_circular(protein, phase)[0])     # direction + rotation only
     phi = circ_corr(wrap_2pi(T["peak_s"][strong]), wrap_2pi(f["peak_s"][strong]))
