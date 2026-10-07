@@ -38,10 +38,9 @@ dataset supports, would be the cleaner test.
 
 ![Cell-phase accuracy of each method](figures/phase_methods.png)
 
-Solid: circular alignment, the convention used everywhere else here. Hatched: the best of 144 rotations,
-picked using the labels. Every method gains under it, by different amounts, so GyreVI drops from second to
-fourth among the label-free methods; the PCA leads under both. The oracle is fitted to the labels: a
-ceiling, not a competitor. GyreVI and the oracle: mean of 6 seeds.
+Circular alignment for every method. The oracle is fitted to the labels: a ceiling, not a competitor.
+GyreVI and the oracle: mean of 6 seeds. With the best of 144 rotations instead (chosen using the labels),
+every method scores higher and GyreVI falls behind Seurat and CycleVI; the PCA still leads.
 
 ![Inferred against protein phase, per cell](figures/phase_scatter.png)
 
