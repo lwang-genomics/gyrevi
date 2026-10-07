@@ -70,7 +70,10 @@ Six seeds, paired, measured against the protein ground truth on the same 5,422 c
 | label-free | CycleVI | +0.438 / +0.573 | 28° |
 | label-free | DeepCycle | +0.275 | 49° |
 
-Three honest qualifications, because the table does not speak for itself:
+Spearman values are the 6-seed paired benchmark; the median angular errors come from the matched
+comparison run, where all five methods were scored on one pass over the same cells.
+
+Three qualifications, because the table does not speak for itself:
 
 1. **The top row is a ceiling, not a competitor.** It is fitted to the ground-truth labels. Nothing
    label-free should be expected to reach it, and its presence is the point: it bounds how much phase
@@ -78,10 +81,12 @@ Three honest qualifications, because the table does not speak for itself:
 2. **θ does not beat the simple baseline.** +0.473 ± 0.009 against +0.463 is inside run-to-run drift.
    It is reported here as a tie, and the method claim rests on δ and φ instead — quantities the
    baseline cannot produce at all.
-3. **CycleVI has two numbers because the metric convention decides the ranking.** +0.438 under
-   circular alignment, +0.573 under a best-shift search; the authors publish 0.513. These are the
-   same predictions scored three ways. A single number here would be a choice presented as a result,
-   so both are given.
+3. **CycleVI has two numbers because the metric convention decides the ranking.** The *same*
+   predictions, from running their method here, score +0.438 under circular alignment and +0.573
+   under a best-shift search. The authors report 0.513 from their own run on this dataset, which
+   sits between the two. Picking one of these would be a choice presented as a result, so the range
+   is given instead — and it is wide enough to contain the entire margin between GyreVI and the
+   baseline.
 
 ---
 
