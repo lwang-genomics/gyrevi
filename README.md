@@ -49,7 +49,8 @@ every method scores higher and the middle three change order; the PCA leads unde
 
 ![Inferred against protein phase, per cell](figures/phase_scatter.png)
 
-GyreVI: the seed closest to the 6-seed mean. The corners are the same point on the circle (0 = 2π).
+Top row: deep models; bottom: simple baselines. GyreVI: the seed closest to the 6-seed mean. The corners
+are the same point on the circle (0 = 2π).
 
 ## Confidence
 
