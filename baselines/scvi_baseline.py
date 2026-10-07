@@ -8,14 +8,16 @@ The probe is SUPERVISED (5-fold CV ridge to cos/sin of the reference), so it mea
 information PRESENT in the latent, not what scVI would report unsupervised. That makes it
 an upper bound on scVI's phase content and a fair ceiling to compare theta against.
 """
-import sys, numpy as np, scanpy as sc, scvi, torch
+import os, sys, numpy as np, scanpy as sc, scvi, torch
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from sklearn.linear_model import RidgeCV
 from sklearn.model_selection import cross_val_predict
 from circular import compare_phases, seurat_angle, to_radians, wrap_2pi
 
-scvi.settings.seed = 0
+# SCVI_SEEDS="0,1,2" trains one scVI per seed: the GPU backend is non-deterministic, so a
+# single run is not a stable ceiling (two runs gave +0.640 and +0.669 on Battich).
+SEEDS = [int(x) for x in os.environ.get("SCVI_SEEDS", "0").split(",")]
 DS = sys.argv[1] if len(sys.argv) > 1 else "fibroblast"
 
 if DS == "battich":
@@ -34,21 +36,28 @@ print(f"{DS}: {a.n_obs} cells x {a.n_vars} genes", flush=True)
 X = a.layers[counts_layer]
 a.layers["counts"] = np.rint(np.asarray(X.todense() if hasattr(X, "todense") else X)).astype(np.float32)
 scvi.model.SCVI.setup_anndata(a, layer="counts")
-model = scvi.model.SCVI(a, n_latent=10, n_hidden=128, n_layers=1)
-model.train(max_epochs=300, early_stopping=False, accelerator="mps",
-            plan_kwargs={"lr": 1e-3})
-Z = model.get_latent_representation()
-print(f"scVI latent {Z.shape}", flush=True)
+scores = {name: [] for name in refs}
+for seed in SEEDS:
+    scvi.settings.seed = seed
+    model = scvi.model.SCVI(a, n_latent=10, n_hidden=128, n_layers=1)
+    model.train(max_epochs=300, early_stopping=False, accelerator="mps",
+                plan_kwargs={"lr": 1e-3})
+    Z = model.get_latent_representation()
+    np.save(os.path.join(os.environ.get("SCR_OUT", "."), f"scvi_latent_{DS}_seed{seed}.npy"), Z)
 
-print(f"\n{'reference':<14}{'scVI probe':>12}{'Seurat':>10}{'medErr':>9}")
-print("-"*46)
-for name, r in refs.items():
-    tgt = np.c_[np.cos(r), np.sin(r)]
-    p = cross_val_predict(RidgeCV(alphas=np.logspace(-2, 4, 14)), Z, tgt, cv=5)
-    c = compare_phases(r, wrap_2pi(np.arctan2(p[:, 1], p[:, 0])), name, "scVI")
-    cs = compare_phases(r, refs["Seurat"], name, "Seurat")
-    print(f"{name:<14}{c['spearman']:>+12.3f}{cs['spearman']:>+10.3f}"
-          f"{c['median_abs_err_deg']:>8.0f}°")
-import os
-np.save(os.path.join(os.environ.get("SCR_OUT", "."), f"scvi_latent_{DS}.npy"), Z)
-print("saved latent")
+    print(f"\nseed {seed}: scVI latent {Z.shape}")
+    print(f"{'reference':<14}{'scVI probe':>12}{'Seurat':>10}{'medErr':>9}")
+    print("-"*46)
+    for name, r in refs.items():
+        tgt = np.c_[np.cos(r), np.sin(r)]
+        p = cross_val_predict(RidgeCV(alphas=np.logspace(-2, 4, 14)), Z, tgt, cv=5)
+        c = compare_phases(r, wrap_2pi(np.arctan2(p[:, 1], p[:, 0])), name, "scVI")
+        cs = compare_phases(r, refs["Seurat"], name, "Seurat")
+        scores[name].append(c["spearman"])
+        print(f"{name:<14}{c['spearman']:>+12.3f}{cs['spearman']:>+10.3f}"
+              f"{c['median_abs_err_deg']:>8.0f}°", flush=True)
+
+if len(SEEDS) > 1:
+    print(f"\nscVI probe over {len(SEEDS)} seeds:")
+    for name, v in scores.items():
+        print(f"  {name:<12} {np.mean(v):+.3f} ± {np.std(v, ddof=1):.3f}")

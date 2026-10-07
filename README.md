@@ -19,7 +19,8 @@ cell-cycle genes, then a least-squares cosine fit per gene.
 | unspliced lead δ | +0.598 ± 0.029 | +0.819 ± 0.024 | +0.932 | **+0.950** |
 | gene amplitude R | +0.912 ± 0.009 | +0.970 ± 0.003 | +0.963 | **+0.981** |
 
-Spearman correlation, except φ (circular correlation). GyreVI: mean ± sd over 6 paired seeds. The simple
+Spearman correlation after circular alignment, except φ (circular correlation). GyreVI: mean ± sd over 6
+paired seeds. The simple
 estimators reproduce with `python baselines/two_step.py`.
 
 The model loses twice:
@@ -37,8 +38,10 @@ dataset supports, would be the cleaner test.
 
 ![Cell-phase accuracy of each method](figures/phase_methods.png)
 
-The oracle is fitted to the labels: a ceiling, not a competitor. CycleVI's score depends on the alignment
-convention, so it is shown as a range.
+Solid: circular alignment, the convention used everywhere else here. Hatched: the best of 144 rotations,
+picked using the labels. Every method gains under it, by different amounts, so GyreVI drops from second to
+fourth among the label-free methods; the PCA leads under both. The oracle is fitted to the labels: a
+ceiling, not a competitor. GyreVI and the oracle: mean of 6 seeds.
 
 ![Inferred against protein phase, per cell](figures/phase_scatter.png)
 
