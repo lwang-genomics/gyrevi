@@ -1,9 +1,8 @@
 # GyreVI
 
-**A deep generative model for a hidden cyclical state in noisy count data, benchmarked against strong simple baselines.**
+**A variational autoencoder that jointly infers cyclical dynamics and cellular state from single-cell RNA-seq data.**
 
-GyreVI is a variational autoencoder. From ~2,000 sparse gene counts per cell, it places each of 5,422 cells
-on a circle, its position in the cell cycle. For every gene, it estimates when the gene peaks and how far
+From ~2,000 sparse gene counts per cell, GyreVI places each of 5,422 cells on a circle, its position in the cell cycle. For every gene, it estimates when the gene peaks and how far
 its unspliced transcripts run ahead of the spliced ones. Every output is scored against an independent
 protein measurement of each cell's position.
 
