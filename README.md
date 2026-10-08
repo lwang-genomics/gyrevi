@@ -29,7 +29,7 @@ from PCA on 90 known cell-cycle genes, then a least-squares cosine fit per gene,
 | unspliced lead δ | +0.598 ± 0.029 | +0.819 ± 0.024 | +0.929 | +0.932 | **+0.950** |
 | gene amplitude R | +0.912 ± 0.009 | +0.970 ± 0.003 | +0.966 | +0.963 | **+0.981** |
 
-Spearman correlation after circular alignment, except φ (circular correlation). GyreVI: mean ± sd over 6
+Spearman correlation (θ after circular alignment), except φ (circular correlation). GyreVI: mean ± sd over 6
 paired seeds. The last three columns reproduce with `python baselines/two_step.py`; the CycleVI column
 needs CycleVI's output from `baselines/run_cyclevi.py` first.
 
