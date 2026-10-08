@@ -6,6 +6,17 @@ From ~2,000 sparse gene counts per cell, GyreVI places each of 5,422 cells on a 
 its unspliced transcripts run ahead of the spliced ones. Every output is scored against an independent
 protein measurement of each cell's position.
 
+![The data: protein ground truth, and a cycling gene's spliced and unspliced RNA](figures/data_intro.png)
+
+**a** Two fluorescent reporters give each cell's true position in the cycle; they are never a model input, only the ground truth for scoring.
+**b–c** For a cycling gene, new (unspliced) RNA rises before mature (spliced) RNA, so the two trace a loop.
+The peak φ and the lead δ are what GyreVI estimates for every gene.
+
+![The model at a glance](figures/model_schematic.png)
+
+The encoder maps each cell's counts to θ, its position on the circle, and z, the rest of its state. The
+decoder turns them back into expected counts, with a peak φ, a lead δ and an amplitude R for each gene.
+
 **Result: a simple linear baseline sets the bar, and shows how much signal is left to capture.** A phase
 from PCA on 90 known cell-cycle genes, then a least-squares cosine fit per gene, leads on every quantity.
 
