@@ -9,8 +9,8 @@ protein measurement of each cell's position.
 ![The data: protein ground truth, and a cycling gene's spliced and unspliced RNA](figures/data_intro.png)
 
 **a** Two fluorescent reporters give each cell's true position in the cycle; they are never a model input, only the ground truth for scoring.
-**b–c** For a cycling gene, new (unspliced) RNA rises before mature (spliced) RNA, so the two trace a loop.
-The peak φ and the lead δ are what GyreVI estimates for every gene.
+**b–c** In NUF2, one of the clearest cycling genes, new (unspliced) RNA rises before mature (spliced) RNA, so the two trace a loop.
+The peak φ and the lead δ (25° here, about 10° for a typical cycling gene) are what GyreVI estimates for every gene.
 
 ![The model at a glance](figures/model_schematic.png)
 
