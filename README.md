@@ -24,10 +24,10 @@ from PCA on 90 known cell-cycle genes, then a least-squares cosine fit per gene,
 
 | correlation with ground truth | GyreVI, learned | least squares at GyreVI's phase | CycleVI phase + least squares | Seurat phase + least squares | PCA phase + least squares |
 |---|---|---|---|---|---|
-| cell phase θ | +0.473 ± 0.009 | — | +0.438 | +0.463 | **+0.579** |
-| gene peak phase φ | +0.706 ± 0.044 | +0.771 ± 0.012 | +0.770 | +0.767 | **+0.823** |
-| unspliced lead δ | +0.598 ± 0.029 | +0.819 ± 0.024 | +0.929 | +0.932 | **+0.950** |
-| gene amplitude R | +0.912 ± 0.009 | +0.970 ± 0.003 | +0.966 | +0.963 | **+0.981** |
+| cell phase θ | +0.47 ± 0.01 | — | +0.44 | +0.46 | **+0.58** |
+| gene peak phase φ | +0.71 ± 0.04 | +0.77 ± 0.01 | +0.77 | +0.77 | **+0.82** |
+| unspliced lead δ | +0.60 ± 0.03 | +0.82 ± 0.02 | +0.93 | +0.93 | **+0.95** |
+| gene amplitude R | +0.91 ± 0.01 | +0.97 ± <0.01 | +0.97 | +0.96 | **+0.98** |
 
 Spearman correlation (θ after circular alignment), except φ (circular correlation). GyreVI: mean ± sd over 6
 paired seeds. The last three columns reproduce with `python baselines/two_step.py`; the CycleVI column
@@ -36,7 +36,7 @@ needs CycleVI's output from `baselines/run_cyclevi.py` first.
 The benchmark pinpoints two gaps:
 
 - **Phase.** GyreVI is trained to follow the PCA phase as a reference, and ends up further from the truth
-  than that reference (+0.473 vs +0.579).
+  than that reference (+0.47 vs +0.58).
 - **Gene parameters.** Even at the model's own phase, least squares beats its learned parameters
   (δ: +0.82 vs +0.60).
 
