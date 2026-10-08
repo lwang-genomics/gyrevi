@@ -6,7 +6,7 @@ From ~2,000 sparse gene counts per cell, GyreVI places each of 5,422 cells on a 
 its unspliced transcripts run ahead of the spliced ones. Every output is scored against an independent
 protein measurement of each cell's position.
 
-![The data: protein ground truth, and a cycling gene's spliced and unspliced RNA](figures/data_overview.png)
+![The data: protein ground truth, and a cycling gene's spliced and unspliced RNA](figures/data_intro.png)
 
 **a** Two fluorescent reporters give each cell's true position in the cycle; they are never a model input, only the ground truth for scoring.
 **b–c** For a cycling gene, new (unspliced) RNA rises before mature (spliced) RNA, so the two trace a loop.
