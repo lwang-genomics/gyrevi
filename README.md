@@ -86,5 +86,5 @@ brightness keeps a 68° sliver, and agreement falls to zero, because brightness 
 | `prepare_battich.py` · `preprocess.py` · `gene_selection.py` · `_constants.py` | data preparation |
 | `baselines/scvi_baseline.py` · `baselines/run_cyclevi.py` | the oracle, and CycleVI under matched conditions |
 
-GyreVI's own code is not public; its numbers come from a 6-seed benchmark. Work done at Institut Curie.
+GyreVI's own code is not yet public; its numbers come from a 6-seed benchmark. Work done at Institut Curie.
 Data: Battich et al., RPE1-FUCCI (public). License: MIT.
